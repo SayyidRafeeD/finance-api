@@ -2,6 +2,7 @@
   "name": "fp-backend-basic",
   "version": "1.0.0",
   "description": "Backend API untuk aplikasi keuangan pribadi menggunakan Express dan MongoDB",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -20,6 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
