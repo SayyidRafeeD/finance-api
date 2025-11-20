@@ -8,8 +8,7 @@ import {
 
 export const findUserByUsername = async (username) => {
     const currentMode = process.env.DATA_MODE ? process.env.DATA_MODE.trim() : 'undefined';
-    console.log(`[Repo Check] Mode: ${currentMode} | Cari Username: ${username}`);
-
+    
     if (currentMode === 'dummy') {
         return await getDummyUserByUsername(username);
     }
@@ -40,11 +39,22 @@ export const createUser = async (userData) => {
         });
     }
 
-    console.log('[Repo] Creating user in MONGODB mode');
     const user = await User.create({
         username,
         password
     });
     
     return user;
+};
+
+export const verifyPassword = async (user, enteredPassword) => {
+    if (typeof user.matchPassword === 'function') {
+        return await user.matchPassword(enteredPassword);
+    }
+    
+    if (user.password) {
+        return await bcrypt.compare(enteredPassword, user.password);
+    }
+
+    return false;
 };

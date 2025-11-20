@@ -1,19 +1,19 @@
 import asyncHandler from '../middleware/asyncHandler.js';
-import User from '../models/userModel.js';
+import * as userRepo from '../repositories/userRepository.js'; 
 import generateToken from '../utils/generateToken.js';
 import { successResponse } from '../utils/response.js';
 
 const registerUser = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
 
-    const userExists = await User.findOne({ username });
+    const userExists = await userRepo.findUserByUsername(username);
 
     if (userExists) {
         res.status(400);
         throw new Error('User already exists');
     }
 
-    const user = await User.create({
+    const user = await userRepo.createUser({
         username,
         password,
     });
@@ -33,9 +33,9 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
 
-    const user = await User.findOne({ username });
+    const user = await userRepo.findUserByUsername(username);
 
-    if (user && (await user.matchPassword(password))) {
+    if (user && (await userRepo.verifyPassword(user, password))) {
         generateToken(res, user._id);
         return successResponse(res, 'Login berhasil', {
             _id: user._id,
@@ -54,7 +54,6 @@ const logoutUser = asyncHandler(async (req, res) => {
     });
     return successResponse(res, 'Logout berhasil');
 });
-
 
 export {
     registerUser,
