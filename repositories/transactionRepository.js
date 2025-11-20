@@ -5,6 +5,7 @@ import {
     addDummyTransaction,
     deleteDummyTransaction
 } from '../data/dummyData.js';
+import { isDummyMode } from '../utils/constants.js';
 
 const buildQuery = (userId, type) => {
     const query = { user: userId };
@@ -15,7 +16,7 @@ const buildQuery = (userId, type) => {
 };
 
 export const findTransactions = async (userId, type) => {
-    if (process.env.DATA_MODE === 'dummy') {
+    if (isDummyMode()) {
         return getDummyTransactions(userId, type);
     }
 
@@ -24,7 +25,7 @@ export const findTransactions = async (userId, type) => {
 };
 
 export const createTransaction = async (data) => {
-    if (process.env.DATA_MODE === 'dummy') {
+    if (isDummyMode()) {
         return addDummyTransaction({ ...data, user: data.user }); 
     }
 
@@ -33,7 +34,7 @@ export const createTransaction = async (data) => {
 };
 
 export const removeTransaction = async (id, userId) => {
-    if (process.env.DATA_MODE === 'dummy') {
+    if (isDummyMode()) {
         const deletedTx = await deleteDummyTransaction(id, userId);
         
         if (!deletedTx) {
