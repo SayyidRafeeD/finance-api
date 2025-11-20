@@ -7,14 +7,19 @@ import {
 } from '../data/dummyData.js';
 
 export const findUserByUsername = async (username) => {
-    if (process.env.DATA_MODE === 'dummy') {
+    const currentMode = process.env.DATA_MODE ? process.env.DATA_MODE.trim() : 'undefined';
+    console.log(`[Repo Check] Mode: ${currentMode} | Cari Username: ${username}`);
+
+    if (currentMode === 'dummy') {
         return await getDummyUserByUsername(username);
     }
     return await User.findOne({ username });
 };
 
 export const findUserById = async (id) => {
-    if (process.env.DATA_MODE === 'dummy') {
+    const currentMode = process.env.DATA_MODE ? process.env.DATA_MODE.trim() : 'undefined';
+    
+    if (currentMode === 'dummy') {
         return await getDummyUserById(id);
     }
     return await User.findById(id).select('-password');
@@ -22,8 +27,10 @@ export const findUserById = async (id) => {
 
 export const createUser = async (userData) => {
     const { username, password } = userData;
+    const currentMode = process.env.DATA_MODE ? process.env.DATA_MODE.trim() : 'undefined';
 
-    if (process.env.DATA_MODE === 'dummy') {
+    if (currentMode === 'dummy') {
+        console.log('[Repo] Creating user in DUMMY mode');
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         
@@ -33,6 +40,7 @@ export const createUser = async (userData) => {
         });
     }
 
+    console.log('[Repo] Creating user in MONGODB mode');
     const user = await User.create({
         username,
         password
