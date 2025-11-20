@@ -6,9 +6,6 @@ import {
     deleteDummyTransaction
 } from '../data/dummyData.js';
 
-const isDummyMode = process.env.DATA_MODE === 'dummy';
-console.log(`[Repository] Data mode: ${isDummyMode ? 'Dummy' : 'MongoDB'}`);
-
 const buildQuery = (userId, type) => {
     const query = { user: userId };
     if (type) {
@@ -18,8 +15,8 @@ const buildQuery = (userId, type) => {
 };
 
 export const findTransactions = async (userId, type) => {
-    if (isDummyMode) {
-        return getDummyTransactions('dummyUserId1', type);
+    if (process.env.DATA_MODE === 'dummy') {
+        return getDummyTransactions(userId, type);
     }
 
     const query = buildQuery(userId, type);
@@ -27,8 +24,8 @@ export const findTransactions = async (userId, type) => {
 };
 
 export const createTransaction = async (data) => {
-    if (isDummyMode) {
-        return addDummyTransaction({ ...data, user: 'dummyUserId1' });
+    if (process.env.DATA_MODE === 'dummy') {
+        return addDummyTransaction({ ...data, user: data.user }); 
     }
 
     const transaction = new Transaction(data);
@@ -36,8 +33,8 @@ export const createTransaction = async (data) => {
 };
 
 export const removeTransaction = async (id, userId) => {
-    if (isDummyMode) {
-        const deletedTx = await deleteDummyTransaction(id, 'dummyUserId1');
+    if (process.env.DATA_MODE === 'dummy') {
+        const deletedTx = await deleteDummyTransaction(id, userId);
         if (!deletedTx) {
             const error = new Error('Dummy transaction not found or not authorized');
             error.status = 404;
