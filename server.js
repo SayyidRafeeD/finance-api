@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); // Gunakan cookie-parser
+app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
