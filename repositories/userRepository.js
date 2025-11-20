@@ -29,7 +29,7 @@ export const createUser = async (userData) => {
     const currentMode = process.env.DATA_MODE ? process.env.DATA_MODE.trim() : 'undefined';
 
     if (currentMode === 'dummy') {
-        console.log('[Repo] Creating user in DUMMY mode');
+        console.log('[Repo] Creating user in Dummy mode');
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         
