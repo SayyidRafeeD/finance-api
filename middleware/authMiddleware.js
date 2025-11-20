@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import asyncHandler from './asyncHandler.js';
-import User from '../models/userModel.js';
+import * as userRepo from '../repositories/userRepository.js';
+
 const protect = asyncHandler(async (req, res, next) => {
     let token;
 
@@ -10,7 +11,7 @@ const protect = asyncHandler(async (req, res, next) => {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            req.user = await User.findById(decoded.userId).select('-password');
+            req.user = await userRepo.findUserById(decoded.userId);
 
             if (!req.user) {
                 res.status(401);
