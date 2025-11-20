@@ -5,7 +5,7 @@ let transactions = [
         text: 'Gaji Bulanan',
         amount: 5000000,
         type: 'income',
-        createdAt: newXsDate(),
+        createdAt: new Date(),
         updatedAt: new Date()
     },
     {
