@@ -35,6 +35,7 @@ export const createTransaction = async (data) => {
 export const removeTransaction = async (id, userId) => {
     if (process.env.DATA_MODE === 'dummy') {
         const deletedTx = await deleteDummyTransaction(id, userId);
+        
         if (!deletedTx) {
             const error = new Error('Dummy transaction not found or not authorized');
             error.status = 404;
@@ -44,7 +45,7 @@ export const removeTransaction = async (id, userId) => {
     }
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        const error = new Error('Transaction not found');
+        const error = new Error('Transaction not found (Invalid ID)');
         error.status = 404;
         throw error;
     }
