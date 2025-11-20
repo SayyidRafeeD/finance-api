@@ -26,9 +26,6 @@ build/
 # Coverage directory (for testing)
 coverage/
 
-# MongoDB data (if using local MongoDB data directory)
-data/
-
 # Miscellaneous
 *.bak
 *.swp
