@@ -9,10 +9,15 @@ import transactionRoutes from './routes/transactionRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
-connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+if (process.env.DATA_MODE === 'dummy') {
+    console.log('Running in Dummy Data Mode');
+} else {
+    connectDB();
+}
 
 app.use(helmet()); 
 app.use(cors());   
