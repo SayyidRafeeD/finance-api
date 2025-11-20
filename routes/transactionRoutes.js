@@ -14,7 +14,7 @@ router.use(protect);
 
 router.route('/')
     .get(getTransactions)
-    .post(validateRequest(createTransactionSchema), addTransaction); // Pasang validator di sini
+    .post(validateRequest(createTransactionSchema), addTransaction);
 
 router.route('/:id')
     .delete(deleteTransaction);
