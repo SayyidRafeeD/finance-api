@@ -1,21 +1,17 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import * as transactionRepo from '../repositories/transactionRepository.js';
+import { successResponse } from '../utils/response.js';
 
 const getTransactions = asyncHandler(async (req, res) => {
     const { type } = req.query;
 
     const transactions = await transactionRepo.findTransactions(req.user._id, type);
 
-    res.status(200).json(transactions);
+    return successResponse(res, 'Data transaksi berhasil diambil', transactions);
 });
 
 const addTransaction = asyncHandler(async (req, res) => {
     const { text, amount, type } = req.body;
-
-    if (!text || !amount || !type) {
-        res.status(400);
-        throw new Error('Text, amount, and type are required');
-    }
 
     const data = {
         text,
@@ -25,7 +21,8 @@ const addTransaction = asyncHandler(async (req, res) => {
     };
 
     const createdTransaction = await transactionRepo.createTransaction(data);
-    res.status(201).json(createdTransaction);
+    
+    return successResponse(res, 'Transaksi berhasil ditambahkan', createdTransaction, 201);
 });
 
 const deleteTransaction = asyncHandler(async (req, res) => {
@@ -34,7 +31,7 @@ const deleteTransaction = asyncHandler(async (req, res) => {
 
     try {
         await transactionRepo.removeTransaction(transactionId, userId);
-        res.status(200).json({ message: 'Transaction removed' });
+        return successResponse(res, 'Transaksi berhasil dihapus');
     } catch (error) {
         res.status(error.status || 500);
         throw new Error(error.message);
