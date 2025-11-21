@@ -23,7 +23,7 @@ const users = [
     {
         _id: 'dummyUserId1',
         username: 'testuser',
-        password: '$2a$10$X3/..',
+        password: '123456',
         password: '$2a$10$3e.8/4.0.1.2.3.4.5.6.7.8.9.0.1.2.3.4.5.6.7.8.9.0', 
         createdAt: new Date(),
         updatedAt: new Date()
