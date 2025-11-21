@@ -1,27 +1,34 @@
-const transactions = [
-    {
-        _id: 'tx1',
-        user: 'dummyUserId1',
-        text: 'Gaji Bulanan (Dummy)',
-        amount: 5000000,
-        type: 'income',
-        createdAt: new Date(),
-        updatedAt: new Date()
-    },
-    {
-        _id: 'tx2',
-        user: 'dummyUserId1',
-        text: 'Makan Siang (Dummy)',
-        amount: 25000,
-        type: 'expense',
-        createdAt: new Date(),
-        updatedAt: new Date()
-    }
-];
+import { TRANSACTION_TYPES } from '../utils/constants.js'; // Import constant biar konsisten
 
-const users = [];
+const users = []; 
+
+const transactions = [];
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const seedWelcomeData = (userId) => {
+    const now = new Date();
+    return [
+        {
+            _id: `tx_welcome_1_${Date.now()}`, 
+            user: userId,
+            text: 'Saldo Awal (Welcome Bonus)',
+            amount: 5000000,
+            type: TRANSACTION_TYPES.INCOME,
+            createdAt: now,
+            updatedAt: now
+        },
+        {
+            _id: `tx_welcome_2_${Date.now()}`,
+            user: userId,
+            text: 'Biaya Admin (Simulasi)',
+            amount: 25000,
+            type: TRANSACTION_TYPES.EXPENSE,
+            createdAt: now,
+            updatedAt: now
+        }
+    ];
+};
 
 export const getDummyTransactions = async (userId, type) => {
     await delay(100);
@@ -64,6 +71,7 @@ export const getDummyUserById = async (id) => {
 
 export const addDummyUser = async (userData) => {
     await delay(100);
+    
     const newUser = {
         _id: `user${Date.now()}`,
         ...userData,
@@ -71,6 +79,11 @@ export const addDummyUser = async (userData) => {
         updatedAt: new Date()
     };
     users.push(newUser);
-    console.log('New User Hash:', userData.password);
+
+    const starterPack = seedWelcomeData(newUser._id);
+    transactions.push(...starterPack);
+
+    console.log(`[DummyDB] User ${newUser.username} created with ${starterPack.length} starter transactions.`);
+    
     return newUser;
 };
