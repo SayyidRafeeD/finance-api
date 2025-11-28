@@ -1,4 +1,4 @@
-import { TRANSACTION_TYPES } from '../utils/constants.js'; // Import constant biar konsisten
+import { TRANSACTION_TYPES } from '../utils/constants.js'; 
 
 const users = []; 
 
@@ -47,6 +47,22 @@ export const addDummyTransaction = async (transactionData) => {
     };
     transactions.push(newTx);
     return newTx;
+};
+
+export const updateDummyTransaction = async (transactionId, userId, updates) => {
+    await delay(100);
+    
+    const index = transactions.findIndex(t => t._id === transactionId && t.user.toString() === userId.toString());
+    
+    if (index !== -1) {
+        transactions[index] = { 
+            ...transactions[index], 
+            ...updates,
+            updatedAt: new Date() 
+        };
+        return transactions[index];
+    }
+    return null; 
 };
 
 export const deleteDummyTransaction = async (transactionId, userId) => {
