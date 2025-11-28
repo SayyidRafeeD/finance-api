@@ -17,7 +17,7 @@
     "jwt",
     "backend"
   ],
-  "author": "Nama Kamu",
+  "author": "Muhammad Sayyid Rafee' Djamil",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^3.0.3",
