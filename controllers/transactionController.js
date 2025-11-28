@@ -25,6 +25,20 @@ const addTransaction = asyncHandler(async (req, res) => {
     return successResponse(res, 'Transaksi berhasil ditambahkan', createdTransaction, 201);
 });
 
+const updateTransaction = asyncHandler(async (req, res) => {
+    const transactionId = req.params.id;
+    const userId = req.user._id;
+    const updates = req.body;
+
+    try {
+        const updatedData = await transactionRepo.updateTransaction(transactionId, userId, updates);
+        return successResponse(res, 'Transaksi berhasil diperbarui', updatedData);
+    } catch (error) {
+        res.status(error.status || 500);
+        throw new Error(error.message);
+    }
+});
+
 const deleteTransaction = asyncHandler(async (req, res) => {
     const transactionId = req.params.id;
     const userId = req.user._id;
@@ -41,5 +55,6 @@ const deleteTransaction = asyncHandler(async (req, res) => {
 export {
     getTransactions,
     addTransaction,
+    updateTransaction,
     deleteTransaction
 };
